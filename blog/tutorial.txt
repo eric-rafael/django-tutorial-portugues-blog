@@ -1,3 +1,5 @@
+
+
 MODELS.PY
 {
     -> Cada classe é uma tabela.
@@ -36,6 +38,7 @@ VIEWS.PY
     -> Podemos criar VIEWS usando funções e usando classes.
     -> Aqui criadas em classes (usando VIEWS genéricas) etc.
     -> Site que descreve as VIEWS: https://ccbv.co.uk/.
+    -> VIEWS definem quais dados vão ser mostrados pro usuário.
     -> 
 }
 {
@@ -120,24 +123,87 @@ main/ URLS.PY
 
 }
 
+TEMPLATES
+{
+        -> definimos como os dados vão ser apresentados pro usuário
+        -> 
+}
 
+base.html
+{
+        -> recebe o conteúdo que é inserido por post_detail.html e post_list.html
+}
+{
+        {% load static %}
 
+        <!DOCTYPE html>
 
+        <html>
 
+        <head>
+                <title>{% block title %}{% endblock %}</title>
+                <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+        </head>
 
+        <body>
+                        ->>> Conteúdo no nosso site. 
+        <header>
+                <h1>Fabio Ruicci</h1>
+        </header>
 
+        <main>
+                {% block content %}
+                {% endblock %}
+        </main>
+        </body>
 
+        </html>        
+}
 
+post_list.html
+{
+        -> possui os dados a ser inseridos na base da página do usuário.
+}
+{
+        {% extends "blog/base.html" %}
+                ->>> post_list.html herda o conteúdo de base.html
 
+        {% block title %}Meu Blog 🐍{% endblock %}
 
+        {% block content %}
+                {% for post in post_list %}
+                        ->>> usa informações da views.py
+                        ->>> laço FOR
+                        <article>
 
+->>> <article></article> por causa do laço FOR se repete na página do 
+     usuário dependendo de quantos posts tem armazenados no banco de dados 
+->>> Para acessar esses atributos usamos duas chaves {{}} sem simbolo de porcentagem %
+                                
+                                <h2>
+                                        <a href="{{ post.get_absolute_url }}">
+                                        {{ post.title }}
+                                        </a>
+                                </h2>
+                                <p class="date">
+                                        Publicado em {{ post.created }} por {{ post.author }}
+                                </p>
+                                {{ post.body|linebreaks|truncatewords:10 }}
+                                   ->>> mostra as 10 primeiras palavras do artigo
+                                   ->>> post.body é o corpo do post
+                                        e nele é aplicado:
+                                        linebreaks é um filter: substitui as quebras
+                                         de linhas por html.
+                                        truncatewords é um filter: apresenta um 
+                                         determinado numero de linhas, nesse caso 10.
+                                        com o pipe | podemos usar os filtros um atras
+                                        do outro.
 
+                                </article>
+                {% endfor %}            
+        {% endblock %}
 
-
-
-
-
-
+}
 
 
 

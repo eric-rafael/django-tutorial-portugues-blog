@@ -1,0 +1,54 @@
+.
+├── Procfile
+├── README.md
+├── blog    ---> -Pasta raiz do APP
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-39.pyc
+│   │   ├── admin.cpython-39.pyc
+│   │   ├── apps.cpython-39.pyc
+│   │   ├── models.cpython-39.pyc
+│   │   ├── urls.cpython-39.pyc
+│   │   └── views.cpython-39.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_auto_20200829_1802.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-39.pyc
+│   │       ├── 0002_auto_20200829_1802.cpython-39.pyc
+│   │       └── __init__.cpython-39.pyc
+│   ├── models.py   ---> -Cria tabelas no banco de dados e informa dados pra VIEWS.PY
+│   ├── static
+│   │   └── css
+│   │       └── blog.css
+│   ├── templates   ---> -Definimos como os dados vão ser apresentados pro usuário
+│   │   └── blog
+│   │       ├── base.html   ---> -recebe o conteúdo que é inserido por
+                                  post_detail.html e post_list.html
+│   │       ├── post_detail.html     ---> -Possui os dados a ser inseridos na
+                                           base da página do usuário.
+│   │       └── post_list.html
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py    ---> -Definem quais dados vão ser mostrados pro usuário.
+├── db.sqlite3
+├── manage.py
+├── requirements.txt
+├── runtime.txt
+└── tutorialdjango
+    ├── __init__.py
+    ├── __pycache__
+    │   ├── __init__.cpython-39.pyc
+    │   ├── urls.cpython-39.pyc
+    │   └── wsgi.cpython-39.pyc
+    ├── asgi.py
+    ├── settings
+    │   ├── __pycache__
+    │   │   └── base.cpython-39.pyc
+    │   ├── base.py
+    │   └── heroku.py
+    ├── urls.py
+    └── wsgi.py
