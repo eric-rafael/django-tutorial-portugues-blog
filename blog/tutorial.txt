@@ -1,0 +1,51 @@
+MODELS.PY
+{
+    Cada classe é uma tabela.
+    Cada variável é um campo.
+    Cada uso da váriável na execução é um registro.
+}
+
+{
+    def __str__(self):
+        return self.title
+            ->>> muda o titulo do post na pagina admin para o titulo registrado
+                 na criação do blog.
+}
+
+
+ADMIN.PY
+{
+    @admin.register(Post)
+            ->>> registra o modelo para ele aparecer na interface.
+
+    class PostAdmin(admin.ModelAdmin):
+            ->>> PostAdmin: editando ele pode criar página de busca, reordenar, etc.
+
+        list_display = ("title", "slug", "author", "created", "updated")
+                ->>> exibe os nomes dos campos em cada post criado na página do admin.
+
+        prepopulated_fields = {"slug": ("title",)}
+                ->>> conforme escreve o titulo do post ele preenche o slug no campo
+                     (slug = models.SlugField) localizado em MODELS.PY <<<-.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
