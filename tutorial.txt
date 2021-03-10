@@ -8,10 +8,40 @@ MODELS.PY
 }
 
 {
-    def __str__(self):
-        return self.title
-                ->>> muda o titulo do post na pagina admin para o titulo registrado
-                    na criação do blog.
+        from django.contrib.auth.models import User
+        from django.db import models
+        from django.urls import reverse
+
+
+        class Post(models.Model):
+        title = models.CharField(max_length=255)
+        slug = models.SlugField(max_length=255, unique=True)
+        author = models.ForeignKey(User, on_delete=models.CASCADE)
+        body = models.TextField()
+        created = models.DateTimeField(auto_now_add=True)
+        updated = models.DateTimeField(auto_now=True)
+
+        class Meta:
+                ordering = ("-created",)
+                 ->>> mostra em post_list o artigos ordenados pelo tempo
+                      de criação.
+
+        def __str__(self):
+                return self.title
+                        ->>> muda o titulo do post na pagina admin para o titulo registrado
+                        na criação do blog.
+
+        def get_absolute_url(self):
+                return reverse("blog:detail", kwargs={"slug": self.slug})
+                        ->>> Define em um unico lugar a url de um recurso
+                        ->>> blog: app name
+                             detail: nome da url > definido no URLS.PY
+                             kwargs: manda o argumento "slug" pasando o
+                             slug do post (self.slug). Método que define
+                             a url de um recurso (nesse caso do post).
+                        
+                        
+
 }
 
 
@@ -135,7 +165,7 @@ base.html
 }
 {
         {% load static %}
-
+         ->>> para usar css.
         <!DOCTYPE html>
 
         <html>
@@ -143,6 +173,7 @@ base.html
         <head>
                 <title>{% block title %}{% endblock %}</title>
                 <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+                 ->>> para usar css.
         </head>
 
         <body>
@@ -182,6 +213,7 @@ post_list.html
                                 
                                 <h2>
                                         <a href="{{ post.get_absolute_url }}">
+                                         ->>> funciona apenas com arguemnto self.
                                         {{ post.title }}
                                         </a>
                                 </h2>
@@ -204,6 +236,66 @@ post_list.html
         {% endblock %}
 
 }
+post_detail.html
+{
+->>> Recebe a variável Post
+
+        {% extends "blog/base.html" %}
+
+        {% block title %}
+                {{ post.title }}
+        {% endblock %}
+
+        {% block content %}
+                <h2>{{ post.title }}</h2>
+                <p class="date">
+                        Publicado em {{ post.created }} por {{ post.author }}
+                </p>
+        {{ post.body|linebreaks }}
+        {% endblock %}
+
+}
+
+static\css\ BLOG.CSS
+{
+        body {
+        margin: 0 25%;
+        font-family: sans-serif;
+        font-size: 1.5rem;
+        color: #111111;
+        }
+
+        h1 {
+        text-align: center;
+        font-family: serif;
+        font-weight: normal;
+        border-bottom: 1px solid;
+        }
+
+        h2 {
+        color: #0072aa;
+        font-weight: normal;
+        margin-bottom: 1px;
+        }
+
+        a {
+        color:#0072aa;
+        text-decoration:none;
+        }
+
+        p.date {
+        font-size: 0.8rem;
+        font-style: italic;
+        margin-top: 1px;
+        }
+
+}
+
+
+
+
+
+
 
 
 
