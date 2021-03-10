@@ -97,13 +97,28 @@ URLS.PY
      padrões (cada item da lista "urlpatterns" é um desses padrões) Assim
      evito conflitos se houver outra url com o nome list e com o nome detail.
      
-
-
-
     ]
-
 }
 
+main/ URLS.PY
+{
+        from django.contrib import admin
+        from django.urls import include, path
+
+
+        urlpatterns = [
+        path("admin/", admin.site.urls),
+        path("blog/", include("blog.urls", namespace="blog")),
+                ->>> inclui a url.py do app na url.py do projeto
+->>> Quando eu acessar (/blog) (isso seria um url sem argumentos)
+     recebo a lista de posts. 
+     Quando eu acessar (/blog/slug do artigo) (isso seria um url com argumentos)
+     recebo a página do post desse slug.
+->>> Se escrevesse path("", inclu...etc) daria para por uma pagina na raiz
+
+]
+
+}
 
 
 
