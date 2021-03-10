@@ -1,15 +1,15 @@
 MODELS.PY
 {
-    Cada classe é uma tabela.
-    Cada variável é um campo.
-    Cada uso da váriável na execução é um registro.
+    -> Cada classe é uma tabela.
+    -> Cada variável é um campo.
+    -> Cada uso da váriável na execução é um registro.
 }
 
 {
     def __str__(self):
         return self.title
-            ->>> muda o titulo do post na pagina admin para o titulo registrado
-                 na criação do blog.
+                ->>> muda o titulo do post na pagina admin para o titulo registrado
+                    na criação do blog.
 }
 
 
@@ -26,8 +26,89 @@ ADMIN.PY
 
         prepopulated_fields = {"slug": ("title",)}
                 ->>> conforme escreve o titulo do post ele preenche o slug no campo
-                     (slug = models.SlugField) localizado em MODELS.PY <<<-.
+                     (slug = models.SlugField) localizado em MODELS.PY    <<<-.
 }
+
+VIEWS.PY
+{
+    -> Funções do pyhton que recebem um REQUEST(uma solicitação web) e retorna um
+    RESPONSE(uma resposta, por ex: um html, JSON, arquivos no geral, etc).
+    -> Podemos criar VIEWS usando funções e usando classes.
+    -> Aqui criadas em classes (usando VIEWS genéricas) etc.
+    -> Site que descreve as VIEWS: https://ccbv.co.uk/.
+    -> 
+}
+{
+    from django.views.generic import DetailView, ListView
+            ->>> ListView: lista vários posts.
+                 DetailView: mostra apenas um post.
+            ->>> Para usa-las a gente cria nossas classes e 
+                 essas nossas classes herdam ListView e DetailView
+                 e as nossas classes são subclasses de ListView e DetailView.
+    
+    from .models import Post
+    
+    class PostListView(ListView):
+            ->>> PostListView é uma subclasse de ListView
+        
+        model = Post
+            
+    class PostDetailView(DetailView):
+            ->>> PostDetailView é uma subclasses de DetailView
+        
+        model = Post
+
+}
+
+URLS.PY
+{
+    from django.urls import path
+            ->>> Importado "path" que será usado em urlpatterns
+
+    from . import views
+
+
+
+->>> Nesse arquivo estamos definindo duas variáveis "app_name" e "urlpatterns"
+
+    app_name = "blog"
+            ->>> "app_name" referencia as urls do arquivo "blog".
+
+
+    urlpatterns = [
+            ->>> "urlpatterns" é uma lista de padrões url
+
+        path("", views.PostListView.as_view(), name="list"),
+                ->>> estamos conectando a url sem argumentos ("")
+                com a view ("PostListView")
+                ->>> quando acessamos a url sem argumentos vamos cair 
+                na lista de posts 
+
+        path("<slug:slug>/", views.PostDetailView.as_view(), name="detail"),
+                ->>> estamos conectando a url que tem slug
+                como argumento ("<slug:slug>/") com a
+                view ("PostDetailView")
+                ->>> quando acessamos a url passando um slug de um post
+                como argumento vamos acessar a página desse post.
+
+->>> o método (as_view()) tem que ser chamado toda a vez que trabalhar com 
+     VIEWS baseadas em classes. Assim obtemos um column que vai receber a REQUEST
+->>> (name="") são os nomes das urls. os nomes que usandos para referencias esses
+     padrões (cada item da lista "urlpatterns" é um desses padrões) Assim
+     evito conflitos se houver outra url com o nome list e com o nome detail.
+     
+
+
+
+    ]
+
+}
+
+
+
+
+
+
 
 
 
